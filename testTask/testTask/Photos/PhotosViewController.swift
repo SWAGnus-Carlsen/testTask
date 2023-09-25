@@ -9,10 +9,10 @@ import UIKit
 
 final class PhotosViewController: UIViewController {
     
-
     // MARK: Views
+
     private lazy var photosTableView: UITableView = {
-       let tableView = UITableView()
+        let tableView = UITableView()
         tableView.register(PhotosTVCell.self, forCellReuseIdentifier: PhotosTVCell.identifier)
         tableView.delegate = self
         tableView.dataSource = self
@@ -21,15 +21,14 @@ final class PhotosViewController: UIViewController {
         return tableView
     }()
     
-    
     private var loadingIndicator: UIActivityIndicatorView = {
-       let indicator = UIActivityIndicatorView()
+        let indicator = UIActivityIndicatorView()
         indicator.translatesAutoresizingMaskIntoConstraints = false
         indicator.hidesWhenStopped = true
         return indicator
     }()
     
-    //MARK: Properties
+    // MARK: Properties
    
     private var photos: [Photo] = [] {
         didSet {
@@ -39,13 +38,17 @@ final class PhotosViewController: UIViewController {
     
     private var currentPage: Int = 0
     
-    //MARK: Lifecycle
+    private var typeId: Int = -1
+    
+    // MARK: Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
     }
     
-    //MARK: Private methods
+    // MARK: Private methods
+
     private func configureUI() {
         title = "List of Photos"
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -83,18 +86,38 @@ final class PhotosViewController: UIViewController {
             }
         }
     }
+    
+    private func showImagePicker() {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.delegate = self
+        present(picker, animated: true)
+    }
+    
+    private func showAlert(withTitle title: String, withMessage message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+        present(alert, animated: true)
+    }
+    
+    private func postPhoto(withImage image: UIImage) {
+        APIManager.shared.postPhoto(to: APIConstants.postPhotoURL(), withId: typeId, withImage: image) {
+            [weak self] postID in
+            DispatchQueue.main.async {
+                self?.showAlert(withTitle: "Congratulations!", withMessage: "Photo successfully uploaded. ID: \(postID)")
+            }
+        }
+    }
 }
 
 // MARK: - TableViewDataSource extension
 
 extension PhotosViewController: UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         photos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-       
         guard let cell = tableView.dequeueReusableCell(withIdentifier: PhotosTVCell.identifier) as? PhotosTVCell else {
             return UITableViewCell()
         }
@@ -106,40 +129,45 @@ extension PhotosViewController: UITableViewDataSource {
 // MARK: - TableViewDelegate extension
 
 extension PhotosViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
+        typeId = photos[indexPath.row].id
+        showImagePicker()
     }
-    
 }
 
 // MARK: - ImagePickerDelegate extension
 
 extension PhotosViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-       
-        self.dismiss(animated: true)
+     
+        postPhoto(withImage: image)
+        
+        dismiss(animated: true)
     }
 }
 
 // MARK: - ScrollViewDelegate extension
+
 extension PhotosViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
-        if position > (photosTableView.contentSize.height) - scrollView.frame.height - 100  {
+        if position > (photosTableView.contentSize.height) - scrollView.frame.height - 100 {
             guard !APIManager.isPaginating,
-                  currentPage <= 6 else {
+                  currentPage <= 6
+            else {
                 return
             }
-            self.photosTableView.tableFooterView = createSpinnerFooter()
+            photosTableView.tableFooterView = createSpinnerFooter()
             
             fetchPhotosList(forPage: currentPage, willPaginating: true)
             
             currentPage += 1
         }
-        
     }
 }

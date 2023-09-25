@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		12574D9A2AC1F94B00F89344 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12574D992AC1F94B00F89344 /* Photo.swift */; };
+		12574D9C2AC1F96B00F89344 /* PhotoListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12574D9B2AC1F96B00F89344 /* PhotoListResponse.swift */; };
+		12574DA02AC1FAB200F89344 /* PostPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12574D9F2AC1FAB200F89344 /* PostPhoto.swift */; };
 		12A9EB952AC052440051CD72 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A9EB942AC052440051CD72 /* AppDelegate.swift */; };
 		12A9EB972AC052440051CD72 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A9EB962AC052440051CD72 /* SceneDelegate.swift */; };
 		12A9EB992AC052440051CD72 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12A9EB982AC052440051CD72 /* PhotosViewController.swift */; };
@@ -21,6 +24,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		12574D992AC1F94B00F89344 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		12574D9B2AC1F96B00F89344 /* PhotoListResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoListResponse.swift; sourceTree = "<group>"; };
+		12574D9F2AC1FAB200F89344 /* PostPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostPhoto.swift; sourceTree = "<group>"; };
 		12A9EB912AC052440051CD72 /* testTask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = testTask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		12A9EB942AC052440051CD72 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		12A9EB962AC052440051CD72 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -47,6 +53,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		12574D982AC1F92100F89344 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				12574D9D2AC1FA5C00F89344 /* Fetch from server only */,
+				12574D9E2AC1FA8A00F89344 /* Upload to server only */,
+				12574DA12AC1FAF100F89344 /* Both */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		12574D9D2AC1FA5C00F89344 /* Fetch from server only */ = {
+			isa = PBXGroup;
+			children = (
+				12574D9B2AC1F96B00F89344 /* PhotoListResponse.swift */,
+				12574D992AC1F94B00F89344 /* Photo.swift */,
+			);
+			path = "Fetch from server only";
+			sourceTree = "<group>";
+		};
+		12574D9E2AC1FA8A00F89344 /* Upload to server only */ = {
+			isa = PBXGroup;
+			children = (
+				12574D9F2AC1FAB200F89344 /* PostPhoto.swift */,
+			);
+			path = "Upload to server only";
+			sourceTree = "<group>";
+		};
+		12574DA12AC1FAF100F89344 /* Both */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Both;
+			sourceTree = "<group>";
+		};
 		12A9EB882AC052440051CD72 = {
 			isa = PBXGroup;
 			children = (
@@ -66,6 +106,7 @@
 		12A9EB932AC052440051CD72 /* testTask */ = {
 			isa = PBXGroup;
 			children = (
+				12574D982AC1F92100F89344 /* Models */,
 				12A9EBB32AC07DA30051CD72 /* Networking */,
 				12A9EBB42AC07E680051CD72 /* Photos */,
 				12A9EB942AC052440051CD72 /* AppDelegate.swift */,
@@ -189,12 +230,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				12574D9A2AC1F94B00F89344 /* Photo.swift in Sources */,
 				12A9EBA92AC066DB0051CD72 /* PhotosTVCell.swift in Sources */,
 				12A9EBB72AC0E0BF0051CD72 /* PhotosTVCellViewModel.swift in Sources */,
 				12A9EB992AC052440051CD72 /* PhotosViewController.swift in Sources */,
 				12A9EBB22AC07AB40051CD72 /* APIConstants.swift in Sources */,
 				12A9EBB02AC079360051CD72 /* APIManager.swift in Sources */,
 				12A9EB952AC052440051CD72 /* AppDelegate.swift in Sources */,
+				12574D9C2AC1F96B00F89344 /* PhotoListResponse.swift in Sources */,
+				12574DA02AC1FAB200F89344 /* PostPhoto.swift in Sources */,
 				12A9EB972AC052440051CD72 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -342,6 +386,7 @@
 				DEVELOPMENT_TEAM = CCCW4AN62Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = testTask/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to take a picture for post request";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -369,6 +414,7 @@
 				DEVELOPMENT_TEAM = CCCW4AN62Y;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = testTask/Info.plist;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Please allow access to take a picture for post request";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

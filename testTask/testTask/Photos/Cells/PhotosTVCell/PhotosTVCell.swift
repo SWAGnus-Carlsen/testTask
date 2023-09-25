@@ -25,6 +25,7 @@ final class PhotosTVCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
+        imageView.tintColor = .systemPink
         return imageView
     }()
     
@@ -60,10 +61,7 @@ final class PhotosTVCell: UITableViewCell {
         photoImageView.sd_setImage(
             with: viewModel.imageURL,
             placeholderImage: UIImage(systemName: "camera"),
-            options: .avoidAutoCancelImage,
-            completed: { [weak self] _,_,_,_ in
-                self?.activityIndicator.stopAnimating()
-        })
+            options: .avoidAutoCancelImage)
         
     }
     
@@ -77,16 +75,7 @@ final class PhotosTVCell: UITableViewCell {
             photoImageView.widthAnchor.constraint(equalToConstant: 60),
             photoImageView.heightAnchor.constraint(equalToConstant: 60)
         ])
-        photoImageView.addSubview(activityIndicator)
-        activityIndicator.hidesWhenStopped = true
-        activityIndicator.style = .large
-        activityIndicator.startAnimating()
-//        NSLayoutConstraint.activate([
-//            activityIndicator.centerXAnchor.constraint(equalTo: photoImageView.centerXAnchor),
-//            activityIndicator.centerYAnchor.constraint(equalTo: photoImageView.centerYAnchor),
-//            
-//        ])
-
+        
         contentView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: photoImageView.trailingAnchor, constant: 8),

@@ -17,6 +17,6 @@ struct PhotosTVCellViewModel {
     init(photo: Photo) {
         title = photo.name
         id = photo.id
-        imageURL = URL(string: photo.image ?? "") //  URL(string: "https://junior.balinasoft.com/images/type/18.jpg")
+        imageURL = URL(string: photo.image ?? "") 
     }
 }
