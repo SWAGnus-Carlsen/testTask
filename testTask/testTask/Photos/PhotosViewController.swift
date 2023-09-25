@@ -35,9 +35,10 @@ final class PhotosViewController: UIViewController {
             photosTableView.reloadData()
         }
     }
-    
+    //To fetch correct page
     private var currentPage: Int = 0
     
+    //To pass this into POST-request
     private var typeId: Int = -1
     
     // MARK: Lifecycle
@@ -79,7 +80,8 @@ final class PhotosViewController: UIViewController {
     }
 
     private func fetchPhotosList(forPage page: Int, willPaginating: Bool) {
-        APIManager.shared.getPageOfPhotos(pagination: willPaginating, from: APIConstants.getPageURL(page)) { [weak self] photoListResponse in
+        APIManager.shared.getPageOfPhotos(pagination: willPaginating, 
+                                          from: APIConstants.getPageURL(page)) { [weak self] photoListResponse in
             DispatchQueue.main.async {
                 self?.photosTableView.tableFooterView = nil
                 self?.photos.append(contentsOf: photoListResponse.content)
@@ -88,6 +90,15 @@ final class PhotosViewController: UIViewController {
     }
     
     private func showImagePicker() {
+        
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            showAlert(withTitle: "Something went wrong :// ",
+                      withMessage: "Oopss... Camera isn't available on this device")
+            print("Oopss... Camera isn't available on this device")
+            
+            return
+        }
+        
         let picker = UIImagePickerController()
         picker.sourceType = .camera
         picker.delegate = self

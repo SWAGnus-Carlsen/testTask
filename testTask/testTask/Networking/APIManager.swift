@@ -30,7 +30,6 @@ final class APIManager {
             do {
                 let dataFromJson = try JSONDecoder().decode(PhotoListResponse.self, from: data)
                 completion(dataFromJson)
-                print(dataFromJson)
                 if pagination {
                     APIManager.isPaginating = false
                 }
