@@ -41,11 +41,11 @@ final class PhotosViewController: UIViewController {
     //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        APIManager.shared.getPageOfPhotos(from: APIConstants.getPageURL(currentPage)) { [weak self] photoListResponse in
-            DispatchQueue.main.async {
-                self?.photos.append(contentsOf: photoListResponse.content)
-            }
-        }
+//        APIManager.shared.getPageOfPhotos(from: APIConstants.getPageURL(currentPage)) { [weak self] photoListResponse in
+//            DispatchQueue.main.async {
+//                self?.photos.append(contentsOf: photoListResponse.content)
+//            }
+//        }
         configureUI()
     }
     
@@ -105,16 +105,9 @@ extension PhotosViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-//        if let cell = tableView.cellForRow(at: indexPath) as? PhotosListTableViewCell {
-//            viewModel?.send(event: .onShowCamera(photoTypeId: cell.model?.id ?? -1))
-//        }
+
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        if indexPath.section == tableView.numberOfSections - 1 && indexPath.row == tableView.numberOfRows(inSection: indexPath.section) - 1 && !(viewModel?.state.isLastPage ?? true) {
-//              viewModel?.send(event: .onLoadMore)
-//          }
-      }
 }
 
 // MARK: - ImagePickerDelegate extension
@@ -123,7 +116,7 @@ extension PhotosViewController: UIImagePickerControllerDelegate, UINavigationCon
     
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-       // viewModel?.send(event: .onPhotoTaken(image))
+       
         self.dismiss(animated: true)
     }
 }
@@ -132,14 +125,13 @@ extension PhotosViewController: UIImagePickerControllerDelegate, UINavigationCon
 extension PhotosViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let position = scrollView.contentOffset.y
-        let smth = scrollView.frame.height * CGFloat(currentPage + 1)
-        if position > (photosTableView.contentSize.height) - scrollView.frame.height - 100 {
+        if position > (photosTableView.contentSize.height) - scrollView.frame.height - 100  {
             guard !APIManager.isPaginating,
                   currentPage <= 6 else {
                 return
             }
             self.photosTableView.tableFooterView = createSpinnerFooter()
-            currentPage += 1
+            
             APIManager.shared.getPageOfPhotos(pagination: true, from: APIConstants.getPageURL(currentPage)) { [weak self] photoListResponse in
                 
                 DispatchQueue.main.async {
@@ -149,6 +141,7 @@ extension PhotosViewController: UIScrollViewDelegate {
                 
                 
             }
+            currentPage += 1
         }
         
     }

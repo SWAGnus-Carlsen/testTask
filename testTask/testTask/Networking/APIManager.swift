@@ -27,6 +27,7 @@ final class APIManager {
             do {
                 let dataFromJson = try JSONDecoder().decode(PhotoListResponse.self, from: data)
                 completion(dataFromJson)
+                print(dataFromJson)
                 if pagination {
                     APIManager.isPaginating = false
                 }
@@ -41,11 +42,14 @@ final class APIManager {
 
 struct PhotoListResponse: Decodable {
     var page: Int
+    var pageSize: Int
+    var totalElements: Int
+    var totalPages: Int
     var content: [Photo]
 }
 
 struct Photo: Decodable {
     var id: Int
     var name: String
-    var imageURL: String?
+    var image: String?
 }

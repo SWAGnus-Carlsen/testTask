@@ -37,6 +37,16 @@ final class PhotosTVCell: UITableViewCell {
         setupUI()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        photoImageView.image = nil
+        titleLabel.text = nil
+    }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -46,7 +56,6 @@ final class PhotosTVCell: UITableViewCell {
     
     func configure(with viewModel: PhotosTVCellViewModel) {
         
-//        photoImageView.sd_setImage(with: viewModel.imageURL)
         titleLabel.text = viewModel.title
         photoImageView.sd_setImage(
             with: viewModel.imageURL,
@@ -72,17 +81,19 @@ final class PhotosTVCell: UITableViewCell {
         activityIndicator.hidesWhenStopped = true
         activityIndicator.style = .large
         activityIndicator.startAnimating()
-        NSLayoutConstraint.activate([
-            activityIndicator.centerXAnchor.constraint(equalTo: photoImageView.centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: photoImageView.centerYAnchor)
-        ])
+//        NSLayoutConstraint.activate([
+//            activityIndicator.centerXAnchor.constraint(equalTo: photoImageView.centerXAnchor),
+//            activityIndicator.centerYAnchor.constraint(equalTo: photoImageView.centerYAnchor),
+//            
+//        ])
 
         contentView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: photoImageView.trailingAnchor, constant: 8),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16)
+            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16)
+            
         ])
     }
 }
