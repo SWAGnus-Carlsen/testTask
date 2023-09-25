@@ -38,14 +38,10 @@ final class PhotosViewController: UIViewController {
     }
     
     private var currentPage: Int = 0
+    
     //MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        APIManager.shared.getPageOfPhotos(from: APIConstants.getPageURL(currentPage)) { [weak self] photoListResponse in
-//            DispatchQueue.main.async {
-//                self?.photos.append(contentsOf: photoListResponse.content)
-//            }
-//        }
         configureUI()
     }
     
@@ -79,6 +75,14 @@ final class PhotosViewController: UIViewController {
         return footerView
     }
 
+    private func fetchPhotosList(forPage page: Int, willPaginating: Bool) {
+        APIManager.shared.getPageOfPhotos(pagination: willPaginating, from: APIConstants.getPageURL(page)) { [weak self] photoListResponse in
+            DispatchQueue.main.async {
+                self?.photosTableView.tableFooterView = nil
+                self?.photos.append(contentsOf: photoListResponse.content)
+            }
+        }
+    }
 }
 
 // MARK: - TableViewDataSource extension
@@ -132,15 +136,8 @@ extension PhotosViewController: UIScrollViewDelegate {
             }
             self.photosTableView.tableFooterView = createSpinnerFooter()
             
-            APIManager.shared.getPageOfPhotos(pagination: true, from: APIConstants.getPageURL(currentPage)) { [weak self] photoListResponse in
-                
-                DispatchQueue.main.async {
-                    self?.photosTableView.tableFooterView = nil
-                    self?.photos.append(contentsOf: photoListResponse.content)
-                }
-                
-                
-            }
+            fetchPhotosList(forPage: currentPage, willPaginating: true)
+            
             currentPage += 1
         }
         
